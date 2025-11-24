@@ -26,14 +26,24 @@
 [Bun]: https://bun.sh/
 [Bruno CLi]: https://docs.usebruno.com/bru-cli/overview
 
-## 起動コマンド
+## Usage
 
-```sh
-bun install
-bun build:serve <report.json>  # Bruno の JSONレポート を指定
+```
+bun serve <report.json> [port:3000] [--open]
 ```
 
-`localhost:3000` にアクセスして画面が表示されればOK。
+## クイックスタート
+
+```sh
+# ビルド
+bun install
+bun run build
+
+# 起動
+bun serve --open <report.json>  # Bruno の JSONレポート を指定
+```
+
+`http://localhost:3000` がブラウザで開かれます。
 
 ## 開発者用コマンド
 

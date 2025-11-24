@@ -1,9 +1,12 @@
 import Bun, { serve } from "bun";
 import path from "node:path";
 
-const [, , reportPath, port = 3000] = Bun.argv;
+const shouldOpen = Bun.argv.includes("--open");
+
+const args = Bun.argv.slice(2).filter((arg) => arg !== "--open");
+const [reportPath, port = 3000] = args;
 if (!reportPath) {
-  console.error("Usage: bun serve <report.json>");
+  console.error("Usage: bun serve <report.json> [port:3000] [--open]");
   process.exit(1);
 }
 
@@ -22,9 +25,8 @@ serve({
     }
 
     // Map / -> /index.html, otherwise serve the file from dist
-    const filePath = url.pathname === "/"
-      ? indexHtmlPath
-      : path.join(distDir, url.pathname);
+    const filePath =
+      url.pathname === "/" ? indexHtmlPath : path.join(distDir, url.pathname);
 
     const file = Bun.file(filePath);
     if (await file.exists()) {
@@ -34,6 +36,10 @@ serve({
     return new Response("Not Found", { status: 404 });
   },
 });
+
+if (shouldOpen) {
+  Bun.spawn(["open", `http://localhost:${port}`]);
+}
 
 console.log(`Serving report at http://localhost:${port}`);
 console.log("Press Ctrl+C to stop.");
