@@ -31,9 +31,7 @@ const filteredResults = computed(() => {
 </script>
 
 <template>
-  <div
-    class="flex h-[calc(100vh_-_var(--spacing-header))] flex-col gap-4 overflow-hidden"
-  >
+  <div class="flex h-[calc(100vh_-_var(--spacing-header))] flex-col gap-4">
     <SideContentHeader
       :summary="props.report.summary"
       v-model:filter-passed="filterPassed"
@@ -41,7 +39,7 @@ const filteredResults = computed(() => {
       v-model:filter-skipped="filterSkipped"
     />
 
-    <ScrollArea class="min-h-0 flex-1">
+    <ScrollArea class="min-h-0">
       <TransitionGroup
         name="request-list"
         tag="div"
