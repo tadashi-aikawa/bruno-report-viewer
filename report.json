@@ -1,0 +1,307 @@
+[
+  {
+    "iterationIndex": 0,
+    "results": [
+      {
+        "test": {
+          "filename": "01_animalsの取得.bru"
+        },
+        "request": {
+          "method": "GET",
+          "url": "http://localhost:8000/animals/",
+          "headers": {
+            "Authorization": "Basic ********"
+          }
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {
+            "date": "Sun, 23 Nov 2025 20:41:19 GMT",
+            "server": "WSGIServer/0.2 CPython/3.13.7",
+            "content-type": "application/json",
+            "vary": "Accept, Cookie",
+            "allow": "GET, POST, HEAD, OPTIONS",
+            "x-frame-options": "DENY",
+            "content-length": "514",
+            "x-content-type-options": "nosniff",
+            "referrer-policy": "same-origin",
+            "cross-origin-opener-policy": "same-origin"
+          },
+          "data": [
+            {
+              "id": "2ebc301b-8f53-4dfc-b0e2-aba69a4149f7",
+              "name": "マサハル",
+              "description": "我が家の愛犬",
+              "proper": false,
+              "kind": "dog",
+              "created": "2025-11-23T01:44:46.482579Z"
+            },
+            {
+              "id": "81e85f56-806e-4703-9666-496632ea87c5",
+              "name": "みたらし",
+              "description": "我が家の愛猫",
+              "proper": false,
+              "kind": "cat",
+              "created": "2025-11-23T01:44:46.485263Z"
+            },
+            {
+              "id": "a2cc3173-912c-4dc3-9737-1eb3d53877ef",
+              "name": "みみぞう",
+              "description": "我が家の愛梟",
+              "proper": false,
+              "kind": "owl",
+              "created": "2025-11-23T01:44:46.486725Z"
+            }
+          ],
+          "url": "http://localhost/animals/",
+          "responseTime": 55
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "1つ目はまさはる",
+            "status": "fail",
+            "error": "expected 'マサハル' to equal 'まさはる'",
+            "actual": "マサハル",
+            "expected": "まさはる",
+            "uid": "5zPSZ9j3ZCw-T43j3Tqa7"
+          },
+          {
+            "description": "3つ目はマサル",
+            "status": "fail",
+            "error": "expected 'みみぞう' to equal 'マサル'",
+            "actual": "みみぞう",
+            "expected": "マサル",
+            "uid": "6qFZomBkpBDjIkhaAqiQQ"
+          },
+          {
+            "description": "animalsが3件",
+            "status": "pass",
+            "uid": "83g1FWyTa5O3ILOJoHYft"
+          },
+          {
+            "description": "2つ目はみたらし",
+            "status": "pass",
+            "uid": "aeXR12hTBeUjHMe_m4YpQ"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.088271584,
+        "name": "01_animalsの取得",
+        "path": "01_animalsの取得",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "02_animalsの登録.bru"
+        },
+        "request": {
+          "method": "POST",
+          "url": "http://localhost:8000/animals/",
+          "headers": {
+            "content-type": "application/json",
+            "Authorization": "Basic ********"
+          },
+          "data": "{\n  \"name\": \"みみこ\",\n  \"description\": \"みみぞうの妹\",\n  \"proper\": false,\n  \"kind\": \"owl\"\n}"
+        },
+        "response": {
+          "status": 201,
+          "statusText": "Created",
+          "headers": {
+            "date": "Sun, 23 Nov 2025 20:41:20 GMT",
+            "server": "WSGIServer/0.2 CPython/3.13.7",
+            "content-type": "application/json",
+            "vary": "Accept, Cookie",
+            "allow": "GET, POST, HEAD, OPTIONS",
+            "x-frame-options": "DENY",
+            "content-length": "193",
+            "x-content-type-options": "nosniff",
+            "referrer-policy": "same-origin",
+            "cross-origin-opener-policy": "same-origin"
+          },
+          "data": {
+            "id": "d8eabc41-f3d6-4169-9837-9fb13cf43334",
+            "owner": "ネオちゃん",
+            "name": "みみこ",
+            "description": "みみぞうの妹",
+            "proper": false,
+            "kind": "owl",
+            "created": "2025-11-23T20:41:20.050795Z"
+          },
+          "url": "http://localhost/animals/",
+          "responseTime": 46
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "ステータスが201",
+            "status": "pass",
+            "uid": "h_g2j19Q1AGLevg4bD5eu"
+          },
+          {
+            "description": "名前があっている",
+            "status": "pass",
+            "uid": "f9TylN3h10KR2occCrNsi"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.04830825,
+        "name": "02_animalsの登録",
+        "path": "02_animalsの登録",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "03_animalsの更新.bru"
+        },
+        "request": {
+          "method": "PUT",
+          "url": "http://localhost:8000/animals/d8eabc41-f3d6-4169-9837-9fb13cf43334/",
+          "headers": {
+            "content-type": "application/json",
+            "Authorization": "Basic ********"
+          },
+          "data": "{\n  \"name\": \"みみたろう\",\n  \"description\": \"みみこの妹\",\n  \"proper\": false,\n  \"kind\": \"owl\"\n}"
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {
+            "date": "Sun, 23 Nov 2025 20:41:20 GMT",
+            "server": "WSGIServer/0.2 CPython/3.13.7",
+            "content-type": "application/json",
+            "vary": "Accept, Cookie",
+            "allow": "GET, PUT, PATCH, DELETE, HEAD, OPTIONS",
+            "x-frame-options": "DENY",
+            "content-length": "196",
+            "x-content-type-options": "nosniff",
+            "referrer-policy": "same-origin",
+            "cross-origin-opener-policy": "same-origin"
+          },
+          "data": {
+            "id": "d8eabc41-f3d6-4169-9837-9fb13cf43334",
+            "owner": "ネオちゃん",
+            "name": "みみたろう",
+            "description": "みみこの妹",
+            "proper": false,
+            "kind": "owl",
+            "created": "2025-11-23T20:41:20.050795Z"
+          },
+          "url": "http://localhost/animals/d8eabc41-f3d6-4169-9837-9fb13cf43334/",
+          "responseTime": 46
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.04837625,
+        "name": "03_animalsの更新",
+        "path": "03_animalsの更新",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "04_animalsの削除.bru"
+        },
+        "request": {
+          "method": "DELETE",
+          "url": "http://localhost:8000/animals/{{animal_id}}/",
+          "headers": {
+            "content-type": "application/json"
+          }
+        },
+        "response": {
+          "status": "skipped",
+          "statusText": "request skipped via pre-request script",
+          "data": null,
+          "responseTime": 0
+        },
+        "error": null,
+        "status": "skipped",
+        "skipped": true,
+        "assertionResults": [],
+        "testResults": [],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.001225167,
+        "name": "04_animalsの削除",
+        "path": "04_animalsの削除",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "05_animalsの許可されていないメソッド.bru"
+        },
+        "request": {
+          "method": "HEAD",
+          "url": "http://localhost:8000/animals/",
+          "headers": {
+            "content-type": "application/json",
+            "Authorization": "Basic ********"
+          }
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {
+            "date": "Sun, 23 Nov 2025 20:41:20 GMT",
+            "server": "WSGIServer/0.2 CPython/3.13.7",
+            "content-type": "application/json",
+            "vary": "Accept, Cookie",
+            "allow": "GET, POST, HEAD, OPTIONS",
+            "x-frame-options": "DENY",
+            "x-content-type-options": "nosniff",
+            "referrer-policy": "same-origin",
+            "cross-origin-opener-policy": "same-origin"
+          },
+          "data": "",
+          "url": "http://localhost/animals/",
+          "responseTime": 45
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": true,
+        "runDuration": 0.047427458,
+        "name": "05_animalsの許可されていないメソッド",
+        "path": "05_animalsの許可されていないメソッド",
+        "iterationIndex": 0
+      }
+    ],
+    "summary": {
+      "totalRequests": 5,
+      "passedRequests": 3,
+      "failedRequests": 1,
+      "errorRequests": 0,
+      "skippedRequests": 1,
+      "totalAssertions": 0,
+      "passedAssertions": 0,
+      "failedAssertions": 0,
+      "totalTests": 6,
+      "passedTests": 4,
+      "failedTests": 2,
+      "totalPreRequestTests": 0,
+      "passedPreRequestTests": 0,
+      "failedPreRequestTests": 0,
+      "totalPostResponseTests": 0,
+      "passedPostResponseTests": 0,
+      "failedPostResponseTests": 0
+    }
+  }
+]
