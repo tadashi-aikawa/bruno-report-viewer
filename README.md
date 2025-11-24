@@ -1,15 +1,30 @@
-# Bruno Report Viewer
-
-Bruno のレポート JSON をブラウザでサッと確認するためのビューア。
-
-`tests {}` で記載されたテスト結果を確認するための **最短経路** を提供します。
+<div align="center">
+    <h1>
+       Bruno Report Viewer
+    </h1>
+    <img src="./public/logo.png" width="256" />
+    <p>
+      <div>BrunoのJSONレポートをブラウザでサッと確認するためのビューア。</div>
+      <div>testsで記載されたテスト結果を確認するための<b>最短経路</b>を提供する。</div>
+    </p>
+</div>
 
 > [!WARNING]
-> BrunoのJSONレポートすべてを表示することは目的としていません。
+> [BrunoのJSONレポート]すべてを表示することは目的としていません。
 
-## 前提条件
+[BrunoのJSONレポート]: https://docs.usebruno.com/bru-cli/builtInReporters#json-report
 
-- Bun v1.3 以上
+## サポート環境
+
+
+| 環境 | バージョン   |
+| ---- | ------------ |
+| [Bun]  | v1.3 以上    |
+| [Bruno CLI]  | v2.14.2 以上 |
+
+
+[Bun]: https://bun.sh/
+[Bruno CLi]: https://docs.usebruno.com/bru-cli/overview
 
 ## 起動コマンド
 
