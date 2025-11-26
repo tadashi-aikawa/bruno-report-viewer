@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { Result, type IterationReport } from "@/types/report";
-import { computed, ref, TransitionGroup } from "vue";
+import { computed, ref, TransitionGroup, watch } from "vue";
 import { ScrollArea } from "../ui/scroll-area";
 import RequestResultSummary from "./RequestResultSummary.vue";
 import SideContentHeader from "./SideContentHeader.vue";
 
 const props = defineProps<{
   report: IterationReport;
-  activeResult: Result | null;
 }>();
+
+const activeResult = defineModel<Result | null>("activeResult", {
+  required: true,
+});
 
 const emit = defineEmits<{
   click: [result: Result];
@@ -28,6 +31,26 @@ const filteredResults = computed(() => {
     );
   });
 });
+watch(
+  filteredResults,
+  (newResults) => {
+    const firstNewResult = newResults[0];
+
+    if (!firstNewResult) {
+      activeResult.value = null;
+      return;
+    }
+    if (!activeResult.value) {
+      activeResult.value = firstNewResult;
+      return;
+    }
+    if (!newResults.includes(activeResult.value)) {
+      activeResult.value = firstNewResult;
+      return;
+    }
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
@@ -49,7 +72,7 @@ const filteredResults = computed(() => {
           v-for="(result, index) in filteredResults"
           :key="result.path ?? index"
           :result="result"
-          :active="props.activeResult === result"
+          :active="activeResult === result"
           @click="emit('click', result)"
         />
       </TransitionGroup>

@@ -5,7 +5,7 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import { Toaster } from "@/components/ui/sonner";
-import { nextTick, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import "vue-sonner/style.css";
 import TheHeader from "./components/header/TheHeader.vue";
 import TheMainContents from "./components/main/TheMainContents.vue";
@@ -15,13 +15,7 @@ import { useReport } from "./composables/useReport";
 import type { Result } from "./types/report";
 
 const { report, fetchReport, loading } = useReport();
-onMounted(async () => {
-  await fetchReport();
-
-  await nextTick();
-
-  activeResult.value = report.value?.results[0] || null;
-});
+onMounted(fetchReport);
 
 const activeResult = ref<Result | null>(null);
 </script>
@@ -40,7 +34,7 @@ const activeResult = ref<Result | null>(null);
         <TheSideContents
           v-if="report"
           :report="report"
-          :active-result="activeResult"
+          v-model:active-result="activeResult"
           @click="(r) => (activeResult = r)"
           class="p-content"
         />
