@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Result } from "@/types/report";
 import { BadgeCheckIcon, CirclePauseIcon, OctagonXIcon } from "lucide-vue-next";
-import { computed } from "vue";
 import { match } from "ts-pattern";
+import { computed } from "vue";
 import MethodBadge from "../MethodBadge.vue";
 import ResponseStatusBadge from "../ResponseStatusBadge.vue";
 
@@ -52,7 +52,7 @@ const statusMeta = computed(() =>
 </script>
 
 <template>
-  <div
+  <button
     class="group relative flex cursor-pointer flex-col gap-2 border transition"
     :class="{
       [statusMeta.baseClass]: !active,
@@ -88,5 +88,5 @@ const statusMeta = computed(() =>
         </div>
       </div>
     </div>
-  </div>
+  </button>
 </template>
