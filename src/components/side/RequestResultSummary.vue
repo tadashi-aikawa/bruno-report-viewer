@@ -71,9 +71,9 @@ const statusMeta = computed(() =>
         </div>
         <div
           class="text-foreground truncate text-sm font-semibold"
-          :title="result.test.filename"
+          :title="result.path"
         >
-          {{ result.test.filename }}
+          {{ result.path }}
         </div>
         <ResponseStatusBadge
           class="ml-auto"
