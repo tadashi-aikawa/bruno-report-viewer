@@ -64,16 +64,13 @@ const statusMeta = computed(() =>
       :class="statusMeta.barClass"
       aria-hidden="true"
     />
-    <div class="p-3 pl-4">
+    <div class="p-1 pl-4">
       <div class="flex items-center gap-2">
         <div :class="statusMeta.class">
           <component :is="statusMeta.icon" class="size-5" aria-hidden="true" />
         </div>
-        <div
-          class="text-foreground truncate text-sm font-semibold"
-          :title="result.path"
-        >
-          {{ result.path }}
+        <div class="text-foreground truncate text-sm font-semibold">
+          {{ result.name }}
         </div>
         <ResponseStatusBadge
           class="ml-auto"
@@ -83,7 +80,7 @@ const statusMeta = computed(() =>
       </div>
       <div class="text-muted-foreground flex items-center gap-2 text-xs">
         <MethodBadge :method="result.request.method" size="sm" tone="text" />
-        <div class="truncate" :title="result.request.url">
+        <div class="truncate">
           {{ result.request.url }}
         </div>
       </div>

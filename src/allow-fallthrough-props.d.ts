@@ -16,6 +16,7 @@ declare module "vue" {
     // TODO: フォールスルー属性が増えたら追加していく
 
     readonly?: boolean;
+    disabled?: boolean;
   }
 
   // for native html elements
