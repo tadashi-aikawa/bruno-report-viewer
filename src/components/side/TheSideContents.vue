@@ -34,7 +34,7 @@ const emit = defineEmits<{
   click: [result: Result];
 }>();
 
-const filterPassed = ref<boolean>(true); // FIXME:
+const filterPassed = ref<boolean>(false);
 const filterFailed = ref<boolean>(true);
 const filterSkipped = ref<boolean>(false);
 const expandedItems = ref<string[]>([]);
