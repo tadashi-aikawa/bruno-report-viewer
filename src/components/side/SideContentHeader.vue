@@ -2,7 +2,7 @@
 import type { Summary } from "@/types/report";
 import {
   BadgeCheckIcon,
-  CirclePauseIcon,
+  CircleOffIcon,
   ListChevronsDownUpIcon,
   ListChevronsUpDown,
   OctagonXIcon,
@@ -49,7 +49,7 @@ const emit = defineEmits<{
         v-if="summary.skippedRequests > 0"
         v-model="filterSkipped"
         label="Skipped"
-        :icon="CirclePauseIcon"
+        :icon="CircleOffIcon"
         :count="summary.skippedRequests"
         class="data-[state=on]:border-blue-700 data-[state=on]:text-blue-700"
       />

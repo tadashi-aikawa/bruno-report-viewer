@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Result } from "@/types/report";
-import { BadgeCheckIcon, CirclePauseIcon, OctagonXIcon } from "lucide-vue-next";
+import { BadgeCheckIcon, CircleOffIcon, OctagonXIcon } from "lucide-vue-next";
 import { match } from "ts-pattern";
 import { computed } from "vue";
 import MethodBadge from "../MethodBadge.vue";
@@ -38,7 +38,7 @@ const statusMeta = computed(() =>
     }))
     .with("skipped", () => ({
       label: "Skipped",
-      icon: CirclePauseIcon,
+      icon: CircleOffIcon,
       baseClass:
         "bg-blue-50/10 hover:bg-blue-100/45 border-blue-100 dark:bg-blue-500/8 dark:hover:bg-blue-500/16",
       activeClass:

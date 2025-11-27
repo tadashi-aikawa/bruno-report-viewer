@@ -239,12 +239,9 @@ const TreeBranch = defineComponent({
       "skipped",
     ];
     const statusBadgeStyles: Record<keyof StatusCounts, string> = {
-      passed:
-        "border-emerald-200 bg-emerald-100 text-emerald-800 dark:border-emerald-500/40 dark:bg-emerald-500/20 dark:text-emerald-50",
-      failed:
-        "border-rose-200 bg-rose-100 text-rose-800 dark:border-rose-500/40 dark:bg-rose-500/20 dark:text-rose-50",
-      skipped:
-        "border-blue-200 bg-blue-100 text-blue-800 dark:border-blue-500/40 dark:bg-blue-500/20 dark:text-blue-50",
+      passed: "border-emerald-200 bg-emerald-100 text-emerald-800",
+      failed: "border-rose-200 bg-rose-100 text-rose-800",
+      skipped: "border-blue-200 bg-blue-100 text-blue-800",
     };
     const renderStatusBadges = () => {
       const badges: VNode[] = [];
