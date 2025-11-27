@@ -371,7 +371,7 @@ const TreeBranch = defineComponent({
       @clickCollapseAll="collapseAll"
     />
 
-    <ScrollArea class="min-h-0">
+    <ScrollArea class="min-h-0 pr-4">
       <Accordion
         v-model="expandedItems as string[]"
         type="multiple"
