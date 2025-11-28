@@ -26,14 +26,29 @@ const word = ref("");
 const expandedItems = ref<string[]>([]);
 
 const filteredResults = computed(() => {
-  return props.report.results.filter((x) => {
-    const status = Result.toStatus(x);
-    return (
-      (status === "passed" && filterPassed.value) ||
-      (status === "failed" && filterFailed.value) ||
-      (status === "skipped" && filterSkipped.value)
-    );
-  });
+  return props.report.results
+    .filter((x) => {
+      const status = Result.toStatus(x);
+      return (
+        (status === "passed" && filterPassed.value) ||
+        (status === "failed" && filterFailed.value) ||
+        (status === "skipped" && filterSkipped.value)
+      );
+    })
+    .filter((x) => {
+      if (!word.value.trim()) {
+        return true;
+      }
+      const lowerWord = word.value.toLowerCase();
+      return (
+        (x.name?.toLowerCase().includes(lowerWord) ?? false) ||
+        (x.path?.toLowerCase().includes(lowerWord) ?? false) ||
+        (x.request?.method.toLowerCase().includes(lowerWord) ?? false) ||
+        (x.request?.url.toLowerCase().includes(lowerWord) ?? false) ||
+        (x.response?.status.toString().toLowerCase().includes(lowerWord) ??
+          false)
+      );
+    });
 });
 watch(
   filteredResults,

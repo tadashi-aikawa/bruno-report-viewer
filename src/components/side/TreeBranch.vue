@@ -3,22 +3,25 @@ import type { Result } from "@/types/report";
 import type { TreeNode } from "@/types/tree";
 import { FolderClosed, FolderOpen } from "lucide-vue-next";
 import { computed, defineEmits, defineOptions, TransitionGroup } from "vue";
-import { AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
+import {
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "../ui/accordion";
 import { Badge } from "../ui/badge";
 import RequestResultSummary from "./RequestResultSummary.vue";
 
 defineOptions({ name: "TreeBranch" });
 
-const props = withDefaults(
-  defineProps<{
-    node: TreeNode;
-    depth?: number;
-    activeResult: Result | null;
-  }>(),
-  {
-    depth: 0,
-  },
-);
+const {
+  node,
+  depth = 0,
+  activeResult,
+} = defineProps<{
+  node: TreeNode;
+  depth?: number;
+  activeResult: Result | null;
+}>();
 
 const emit = defineEmits<{
   select: [result: Result];
@@ -34,19 +37,17 @@ const statusBadgeStyles: Record<StatusKey, string> = {
   skipped: "border-blue-200 bg-blue-100 text-blue-800",
 };
 
-const hasChildren = computed(() => props.node.children.length > 0);
-const paddingStyle = computed(() => ({ paddingLeft: `${props.depth * 12 + 4}px` }));
+const hasChildren = computed(() => node.children.length > 0);
+const paddingStyle = computed(() => ({
+  paddingLeft: `${depth * 12 + 4}px`,
+}));
 const visibleStatuses = computed<StatusKey[]>(() =>
-  statusOrder.filter((statusKey) => props.node.statusCounts[statusKey] > 0),
+  statusOrder.filter((statusKey) => node.statusCounts[statusKey] > 0),
 );
 </script>
 
 <template>
-  <AccordionItem
-    v-if="hasChildren"
-    :value="node.fullPath"
-    class="border-none"
-  >
+  <AccordionItem v-if="hasChildren" :value="node.fullPath" class="border-none">
     <AccordionTrigger
       class="group flex items-center justify-start gap-2 py-2 pr-2 text-sm leading-tight"
       :style="paddingStyle"
@@ -56,7 +57,7 @@ const visibleStatuses = computed<StatusKey[]>(() =>
         aria-hidden
       />
       <FolderOpen
-        class="text-muted-foreground size-4 shrink-0 hidden group-data-[state=open]:block"
+        class="text-muted-foreground hidden size-4 shrink-0 group-data-[state=open]:block"
         aria-hidden
       />
       <span class="truncate">{{ node.name }}</span>
@@ -71,7 +72,7 @@ const visibleStatuses = computed<StatusKey[]>(() =>
         </Badge>
       </div>
     </AccordionTrigger>
-    <AccordionContent class="pl-1 py-1">
+    <AccordionContent class="py-1 pl-1">
       <TransitionGroup
         name="request-list"
         tag="div"
@@ -89,11 +90,7 @@ const visibleStatuses = computed<StatusKey[]>(() =>
     </AccordionContent>
   </AccordionItem>
 
-  <div
-    v-else-if="node.result"
-    :style="paddingStyle"
-    class="flex flex-col"
-  >
+  <div v-else-if="node.result" :style="paddingStyle" class="flex flex-col">
     <RequestResultSummary
       :result="node.result"
       :active="activeResult === node.result"

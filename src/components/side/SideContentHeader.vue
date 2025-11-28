@@ -8,6 +8,7 @@ import {
   OctagonXIcon,
 } from "lucide-vue-next";
 import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 import StatusToggle from "./StatusToggle.vue";
 
 defineProps<{
@@ -19,6 +20,8 @@ const filterFailed = defineModel<boolean>("filter-failed", { required: true });
 const filterSkipped = defineModel<boolean>("filter-skipped", {
   required: true,
 });
+
+const word = defineModel<string>("word", { required: true });
 
 const emit = defineEmits<{
   clickExpandAll: [];
@@ -54,6 +57,13 @@ const emit = defineEmits<{
         class="data-[state=on]:border-blue-700 data-[state=on]:text-blue-700"
       />
     </div>
+
+    <Input
+      v-model="word as string"
+      type="search"
+      placeholder="Search requests..."
+      class="max-w-sm"
+    />
 
     <div class="flex justify-end gap-2 px-1">
       <Button variant="outline" size="icon" @click="emit('clickExpandAll')">
