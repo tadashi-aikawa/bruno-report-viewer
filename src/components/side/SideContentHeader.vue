@@ -3,6 +3,7 @@ import type { Summary } from "@/types/report";
 import {
   BadgeCheckIcon,
   CircleOffIcon,
+  FilterIcon,
   ListChevronsDownUpIcon,
   ListChevronsUpDown,
   OctagonXIcon,
@@ -30,40 +31,47 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div class="flex flex-none items-center justify-between">
-    <div class="flex gap-2 text-lg">
-      <StatusToggle
-        v-if="summary.passedRequests > 0"
-        v-model="filterPassed"
-        label="Passed"
-        :icon="BadgeCheckIcon"
-        :count="summary.passedRequests"
-        class="data-[state=on]:border-emerald-700 data-[state=on]:text-emerald-700"
-      />
-      <StatusToggle
-        v-if="summary.failedRequests > 0"
-        v-model="filterFailed"
-        label="Failed"
-        :icon="OctagonXIcon"
-        :count="summary.failedRequests"
-        class="data-[state=on]:border-destructive data-[state=on]:text-destructive"
-      />
-      <StatusToggle
-        v-if="summary.skippedRequests > 0"
-        v-model="filterSkipped"
-        label="Skipped"
-        :icon="CircleOffIcon"
-        :count="summary.skippedRequests"
-        class="data-[state=on]:border-blue-700 data-[state=on]:text-blue-700"
-      />
-    </div>
+  <div class="flex items-center justify-between gap-2">
+    <div class="flex flex-1 flex-wrap items-center gap-4">
+      <div class="flex items-center gap-2 text-lg">
+        <StatusToggle
+          v-if="summary.passedRequests > 0"
+          v-model="filterPassed"
+          label="Passed"
+          :icon="BadgeCheckIcon"
+          :count="summary.passedRequests"
+          class="data-[state=on]:border-emerald-700 data-[state=on]:text-emerald-700"
+        />
+        <StatusToggle
+          v-if="summary.failedRequests > 0"
+          v-model="filterFailed"
+          label="Failed"
+          :icon="OctagonXIcon"
+          :count="summary.failedRequests"
+          class="data-[state=on]:border-destructive data-[state=on]:text-destructive"
+        />
+        <StatusToggle
+          v-if="summary.skippedRequests > 0"
+          v-model="filterSkipped"
+          label="Skipped"
+          :icon="CircleOffIcon"
+          :count="summary.skippedRequests"
+          class="data-[state=on]:border-blue-700 data-[state=on]:text-blue-700"
+        />
+      </div>
 
-    <Input
-      v-model="word as string"
-      type="search"
-      placeholder="Search requests..."
-      class="max-w-sm"
-    />
+      <div class="relative max-w-100 flex-1">
+        <FilterIcon
+          class="text-secondary-foreground pointer-events-none absolute top-1/2 left-2 size-4 -translate-y-1/2"
+        />
+        <Input
+          v-model="word as string"
+          type="search"
+          placeholder="Filter by word..."
+          class="pl-8"
+        />
+      </div>
+    </div>
 
     <div class="flex justify-end gap-2 px-1">
       <Button variant="outline" size="icon" @click="emit('clickExpandAll')">
