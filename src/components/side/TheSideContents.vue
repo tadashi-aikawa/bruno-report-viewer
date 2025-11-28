@@ -5,6 +5,7 @@ import {
   computed,
   defineComponent,
   h,
+  onMounted,
   ref,
   TransitionGroup,
   watch,
@@ -354,6 +355,10 @@ const TreeBranch = defineComponent({
       );
     };
   },
+});
+
+onMounted(() => {
+  expandAll();
 });
 </script>
 
