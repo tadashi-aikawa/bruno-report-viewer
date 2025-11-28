@@ -54,11 +54,11 @@ watch(
   filteredResults,
   (newResults) => {
     const firstNewResult = newResults[0];
-
     if (!firstNewResult) {
       activeResult.value = null;
       return;
     }
+
     if (!activeResult.value) {
       activeResult.value = firstNewResult;
       return;
@@ -194,10 +194,11 @@ watch(
 const expandAll = () => {
   expandedItems.value = [...expandableValues.value];
 };
-
 const collapseAll = () => {
   expandedItems.value = [];
 };
+
+watch(filteredResults, expandAll);
 
 onMounted(() => {
   expandAll();
