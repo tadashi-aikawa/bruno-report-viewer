@@ -1,27 +1,11 @@
 <script setup lang="ts">
 import { Result, type IterationReport } from "@/types/report";
-import { FolderClosed, FolderOpen } from "lucide-vue-next";
-import {
-  computed,
-  defineComponent,
-  h,
-  onMounted,
-  ref,
-  TransitionGroup,
-  watch,
-  type PropType,
-  type VNode,
-} from "vue";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "../ui/accordion";
-import { Badge } from "../ui/badge";
+import type { StatusCounts, TreeNode } from "@/types/tree";
+import { computed, onMounted, ref, watch } from "vue";
+import { Accordion } from "../ui/accordion";
 import { ScrollArea } from "../ui/scroll-area";
-import RequestResultSummary from "./RequestResultSummary.vue";
 import SideContentHeader from "./SideContentHeader.vue";
+import TreeBranch from "./TreeBranch.vue";
 
 const props = defineProps<{
   report: IterationReport;
@@ -38,6 +22,7 @@ const emit = defineEmits<{
 const filterPassed = ref<boolean>(false);
 const filterFailed = ref<boolean>(true);
 const filterSkipped = ref<boolean>(false);
+const word = ref("");
 const expandedItems = ref<string[]>([]);
 
 const filteredResults = computed(() => {
@@ -70,21 +55,6 @@ watch(
   },
   { immediate: true },
 );
-
-type StatusCounts = {
-  passed: number;
-  failed: number;
-  skipped: number;
-};
-
-type TreeNode = {
-  name: string;
-  fullPath: string;
-  children: TreeNode[];
-  result?: Result;
-  resultCount: number;
-  statusCounts: StatusCounts;
-};
 
 type BuildNode = {
   name: string;
@@ -214,149 +184,6 @@ const collapseAll = () => {
   expandedItems.value = [];
 };
 
-const TreeBranch = defineComponent({
-  name: "TreeBranch",
-  props: {
-    node: {
-      type: Object as PropType<TreeNode>,
-      required: true,
-    },
-    depth: {
-      type: Number,
-      default: 0,
-    },
-    activeResult: {
-      type: Object as PropType<Result | null>,
-      default: null,
-    },
-  },
-  emits: ["select"],
-  setup(props, { emit }) {
-    const handleSelect = (result: Result) => emit("select", result);
-
-    const statusOrder: Array<keyof StatusCounts> = [
-      "passed",
-      "failed",
-      "skipped",
-    ];
-    const statusBadgeStyles: Record<keyof StatusCounts, string> = {
-      passed: "border-emerald-200 bg-emerald-100 text-emerald-800",
-      failed: "border-rose-200 bg-rose-100 text-rose-800",
-      skipped: "border-blue-200 bg-blue-100 text-blue-800",
-    };
-    const renderStatusBadges = () => {
-      const badges: VNode[] = [];
-      statusOrder.forEach((status) => {
-        const count = props.node.statusCounts[status];
-        if (count === 0) return;
-
-        badges.push(
-          h(
-            Badge,
-            {
-              key: status,
-              variant: "outline",
-              class: statusBadgeStyles[status],
-            },
-            () => count,
-          ),
-        );
-      });
-      return badges;
-    };
-
-    const renderChildren = () =>
-      h(
-        TransitionGroup,
-        {
-          name: "request-list",
-          tag: "div",
-          class: "flex flex-col gap-2",
-        },
-        () =>
-          props.node.children.map((child) =>
-            h(TreeBranch, {
-              key: child.fullPath,
-              node: child,
-              depth: props.depth + 1,
-              activeResult: props.activeResult,
-              onSelect: handleSelect,
-            }),
-          ),
-      );
-
-    return () => {
-      const hasChildren = props.node.children.length > 0;
-
-      if (hasChildren) {
-        return h(
-          AccordionItem,
-          {
-            value: props.node.fullPath,
-            class: "border-none",
-          },
-          {
-            default: () => [
-              h(
-                AccordionTrigger,
-                {
-                  class:
-                    "group flex items-center justify-start gap-2 py-2 pr-2 text-sm leading-tight",
-                  style: { paddingLeft: `${props.depth * 12 + 4}px` },
-                },
-                () => [
-                  h(FolderClosed, {
-                    class:
-                      "text-muted-foreground size-4 shrink-0 group-data-[state=open]:hidden",
-                    "aria-hidden": true,
-                  }),
-                  h(FolderOpen, {
-                    class:
-                      "text-muted-foreground size-4 shrink-0 hidden group-data-[state=open]:block",
-                    "aria-hidden": true,
-                  }),
-                  h("span", { class: "truncate" }, props.node.name),
-                  h(
-                    "div",
-                    { class: "ml-auto flex items-center gap-1" },
-                    renderStatusBadges(),
-                  ),
-                ],
-              ),
-              h(
-                AccordionContent,
-                {
-                  class: "pl-1 py-1",
-                },
-                {
-                  default: () => renderChildren(),
-                },
-              ),
-            ],
-          },
-        );
-      }
-
-      if (!props.node.result) return null;
-
-      return h(
-        "div",
-        {
-          style: { paddingLeft: `${props.depth * 12 + 4}px` },
-          class: "flex flex-col",
-        },
-        [
-          h(RequestResultSummary, {
-            result: props.node.result,
-            active: props.activeResult === props.node.result,
-            onClick: () => handleSelect(props.node.result as Result),
-          }),
-        ],
-      );
-    };
-  },
-});
-
 onMounted(() => {
   expandAll();
 });
@@ -369,6 +196,7 @@ onMounted(() => {
       v-model:filter-passed="filterPassed"
       v-model:filter-failed="filterFailed"
       v-model:filter-skipped="filterSkipped"
+      v-model:word="word"
       @clickExpandAll="expandAll"
       @clickCollapseAll="collapseAll"
     />
@@ -390,25 +218,3 @@ onMounted(() => {
     </ScrollArea>
   </div>
 </template>
-
-<style scoped>
-.request-list-enter-active,
-.request-list-leave-active {
-  transition:
-    opacity 220ms ease,
-    transform 220ms ease;
-}
-.request-list-enter-from,
-.request-list-leave-to {
-  opacity: 0;
-  transform: translateY(4px);
-}
-.request-list-enter-to,
-.request-list-leave-from {
-  opacity: 1;
-  transform: translateY(0);
-}
-.request-list-move {
-  transition: transform 220ms ease;
-}
-</style>
