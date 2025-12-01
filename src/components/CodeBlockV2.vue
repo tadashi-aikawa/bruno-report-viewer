@@ -13,7 +13,7 @@ const props = defineProps<{
 
 const editorEl = ref<HTMLDivElement | null>(null);
 onMounted(() => {
-  const editor = monaco.editor.create(editorEl.value!, {
+  monaco.editor.create(editorEl.value!, {
     value: props.content,
     language: "json",
     automaticLayout: true,
