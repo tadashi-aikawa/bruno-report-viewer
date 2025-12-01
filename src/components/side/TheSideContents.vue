@@ -229,6 +229,7 @@ onMounted(() => {
           :node="node"
           :active-result="activeResult"
           @select="emit('click', $event)"
+          @click-filter="(p) => (word = p)"
         />
       </Accordion>
     </ScrollArea>

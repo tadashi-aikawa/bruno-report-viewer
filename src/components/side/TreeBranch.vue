@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Result } from "@/types/report";
 import type { TreeNode } from "@/types/tree";
-import { FolderClosed, FolderOpen } from "lucide-vue-next";
+import { FilterIcon, FolderClosed, FolderOpen } from "lucide-vue-next";
 import { computed, defineEmits, defineOptions, TransitionGroup } from "vue";
 import {
   AccordionContent,
@@ -9,6 +9,7 @@ import {
   AccordionTrigger,
 } from "../ui/accordion";
 import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
 import RequestResultSummary from "./RequestResultSummary.vue";
 
 defineOptions({ name: "TreeBranch" });
@@ -25,6 +26,7 @@ const {
 
 const emit = defineEmits<{
   select: [result: Result];
+  clickFilter: [path: string];
 }>();
 
 const handleSelect = (result: Result) => emit("select", result);
@@ -61,7 +63,16 @@ const visibleStatuses = computed<StatusKey[]>(() =>
         aria-hidden
       />
       <span class="truncate">{{ node.name }}</span>
-      <div class="ml-auto flex items-center gap-1">
+
+      <div class="ml-auto flex items-center gap-2">
+        <Button
+          variant="ghost"
+          size="icon"
+          class="opacity-0 group-hover:opacity-100"
+          @click.stop="emit('clickFilter', node.fullPath)"
+        >
+          <FilterIcon class="text-muted-foreground size-4" aria-hidden />
+        </Button>
         <Badge
           v-for="statusKey in visibleStatuses"
           :key="statusKey"
@@ -85,6 +96,7 @@ const visibleStatuses = computed<StatusKey[]>(() =>
           :depth="depth + 1"
           :active-result="activeResult"
           @select="handleSelect"
+          @click-filter="emit('clickFilter', $event)"
         />
       </TransitionGroup>
     </AccordionContent>
