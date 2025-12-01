@@ -4,6 +4,7 @@ import { hasJsonBody, hasJsonHeader, prettifyJson } from "@/utils/json";
 import { FileBracesCornerIcon } from "lucide-vue-next";
 import { computed } from "vue";
 import CodeBlock from "../CodeBlock.vue";
+import CodeBlockV2 from "../CodeBlockV2.vue";
 import ResponseStatusBadge from "../ResponseStatusBadge.vue";
 import {
   Accordion,
@@ -70,7 +71,7 @@ const prettyResponseBody = computed(() => prettifyJson(props.response.data));
           <span>Response Body</span>
         </div>
         <p v-if="!hasBody" class="text-muted-foreground text-sm">No body.</p>
-        <CodeBlock v-else :content="prettyResponseBody" language="json" />
+        <CodeBlockV2 v-else :content="prettyResponseBody" language="json" />
       </div>
     </template>
   </div>
