@@ -23,5 +23,5 @@ onMounted(() => {
 </script>
 
 <template>
-  <div ref="editorEl" class="h-[calc(100vh_-_300px)]"></div>
+  <div ref="editorEl"></div>
 </template>

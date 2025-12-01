@@ -71,7 +71,12 @@ const prettyResponseBody = computed(() => prettifyJson(props.response.data));
           <span>Response Body</span>
         </div>
         <p v-if="!hasBody" class="text-muted-foreground text-sm">No body.</p>
-        <CodeBlockV2 v-else :content="prettyResponseBody" language="json" />
+        <CodeBlockV2
+          v-else
+          :content="prettyResponseBody"
+          language="json"
+          class="h-[calc(100vh_-_20rem)]"
+        />
       </div>
     </template>
   </div>
