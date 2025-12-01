@@ -14,6 +14,13 @@ const failedResults = computed(() =>
 const passedResults = computed(() =>
   props.results.filter((x) => x.status === "pass"),
 );
+
+const isEqualAssertion = (result: AssertionResult) =>
+  /^expected '[^']+' to equal '[^']+'$/.test(result.error || "");
+const isLengthAssertion = (result: AssertionResult) =>
+  /^expected \[[^\]]+\] to have a length of \d+ but got \d+$/.test(
+    result.error || "",
+  );
 </script>
 
 <template>
@@ -48,7 +55,43 @@ const passedResults = computed(() =>
             <p class="text-sm leading-tight break-words">
               {{ result.description }}
             </p>
-            <p class="text-muted-foreground text-xs leading-tight break-words">
+
+            <div
+              v-if="isEqualAssertion(result)"
+              class="text-muted-foreground flex flex-wrap items-center gap-1 text-xs leading-tight break-words"
+            >
+              <span class="text-[11px] tracking-wide uppercase">expected</span>
+              <span class="text-foreground font-medium">
+                {{ result.expected }}
+              </span>
+              <span class="text-muted-foreground">·</span>
+              <span class="text-[11px] tracking-wide uppercase">actual</span>
+              <span class="text-foreground font-medium">
+                {{ result.actual }}
+              </span>
+            </div>
+            <div
+              v-else-if="isLengthAssertion(result)"
+              class="text-muted-foreground flex flex-wrap items-center gap-1 text-xs leading-tight break-words"
+            >
+              <span class="text-[11px] tracking-wide uppercase"
+                >expected length</span
+              >
+              <span class="text-foreground font-medium">
+                {{ result.expected }}
+              </span>
+              <span class="text-muted-foreground">·</span>
+              <span class="text-[11px] tracking-wide uppercase"
+                >actual length</span
+              >
+              <span class="text-foreground font-medium">
+                {{ result.actual }}
+              </span>
+            </div>
+            <p
+              v-else
+              class="text-muted-foreground text-xs leading-tight break-words"
+            >
               {{ result.error }}
             </p>
           </div>
