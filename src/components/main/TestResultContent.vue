@@ -18,7 +18,7 @@ const passedResults = computed(() =>
 const isEqualAssertion = (result: AssertionResult) =>
   /^expected '[^']+' to equal '[^']+'$/.test(result.error || "");
 const isLengthAssertion = (result: AssertionResult) =>
-  /^expected \[[^\]]+\] to have a length of \d+ but got \d+$/.test(
+  /^expected \[[^\]]+\] to have a length of [^ ]+ but got [^ ]+$/.test(
     result.error || "",
   );
 </script>
