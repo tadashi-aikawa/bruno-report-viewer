@@ -2,7 +2,7 @@
 import type { Result } from "@/types/report";
 import type { TreeNode } from "@/types/tree";
 import { FilterIcon, FolderClosed, FolderOpen } from "lucide-vue-next";
-import { computed, defineEmits, defineOptions, TransitionGroup } from "vue";
+import { computed, TransitionGroup } from "vue";
 import {
   AccordionContent,
   AccordionItem,
