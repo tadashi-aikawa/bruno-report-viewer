@@ -42,5 +42,5 @@
 
 - コード変更後は以下を実行
     - `bun run typecheck` で型チェック
+    - `bun run test` でユニットテスト
     - prettierの実行
-
