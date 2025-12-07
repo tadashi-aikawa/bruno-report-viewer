@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Result, type IterationReport } from "@/types/report";
 import type { StatusCounts, TreeNode } from "@/types/tree";
+import { buildMatchers, matchesFields } from "@/utils/search";
 import { computed, onMounted, ref, watch } from "vue";
 import { Accordion } from "../ui/accordion";
 import { ScrollArea } from "../ui/scroll-area";
@@ -26,6 +27,8 @@ const word = ref("");
 const expandedItems = ref<string[]>([]);
 
 const filteredResults = computed(() => {
+  const matchers = word.value.trim() ? buildMatchers(word.value) : [];
+
   return props.report.results
     .filter((x) => {
       const status = Result.toStatus(x);
@@ -36,18 +39,13 @@ const filteredResults = computed(() => {
       );
     })
     .filter((x) => {
-      if (!word.value.trim()) {
-        return true;
-      }
-      const lowerWord = word.value.toLowerCase();
-      return (
-        (x.name?.toLowerCase().includes(lowerWord) ?? false) ||
-        (x.path?.toLowerCase().includes(lowerWord) ?? false) ||
-        (x.request?.method.toLowerCase().includes(lowerWord) ?? false) ||
-        (x.request?.url.toLowerCase().includes(lowerWord) ?? false) ||
-        (x.response?.status.toString().toLowerCase().includes(lowerWord) ??
-          false)
-      );
+      return matchesFields(matchers, [
+        x.name,
+        x.path,
+        x.request?.method,
+        x.request?.url,
+        x.response?.status?.toString(),
+      ]);
     });
 });
 watch(
