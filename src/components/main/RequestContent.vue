@@ -2,9 +2,10 @@
 import type { Request } from "@/types/report";
 import { hasJsonBody, prettifyJson } from "@/utils/json";
 import { FileBracesCornerIcon } from "lucide-vue-next";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import CodeBlock from "../CodeBlock.vue";
 import MethodBadge from "../MethodBadge.vue";
+import RequestQueryTable from "./RequestQueryTable.vue";
 import {
   Accordion,
   AccordionContent,
@@ -25,18 +26,42 @@ const prettyJsonHeaders = computed(() =>
 
 const hasBody = computed(() => hasJsonBody(props.request.data));
 const prettyRequestBody = computed(() => prettifyJson(props.request.data));
+
+const queryMap = computed(() => {
+  const url = new URL(props.request.url);
+  return Array.from(url.searchParams).reduce<{ [key: string]: string[] }>(
+    (acc, [k, v]) => {
+      (acc[k] ??= []).push(v);
+      return acc;
+    },
+    {},
+  );
+});
+
+const queryFilter = ref("");
 </script>
 
 <template>
   <div class="space-y-4">
-    <div
-      class="bg-secondary/60 flex items-center gap-3 rounded-md border px-4 py-3"
+    <Accordion
+      type="single"
+      collapsible
+      class="bg-secondary/60 rounded-md border px-4"
     >
-      <MethodBadge :method="request.method" />
-      <span class="text-foreground font-mono text-sm break-all">{{
-        request.url
-      }}</span>
-    </div>
+      <AccordionItem value="query">
+        <AccordionTrigger>
+          <div class="flex items-center gap-3">
+            <MethodBadge :method="request.method" />
+            <span class="text-foreground font-mono text-sm break-all">{{
+              request.url
+            }}</span>
+          </div>
+        </AccordionTrigger>
+        <AccordionContent>
+          <RequestQueryTable v-model="queryFilter" :query-map="queryMap" />
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
 
     <Accordion
       type="single"

@@ -67,7 +67,7 @@ const emit = defineEmits<{
         <Input
           v-model="word as string"
           type="search"
-          placeholder="Filter by word..."
+          placeholder="Filter (space-separated AND, regex supported)"
           class="pl-8"
         />
       </div>
