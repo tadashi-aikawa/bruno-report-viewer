@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { Response } from "@/types/report";
-import { hasJsonBody, hasJsonHeader, prettifyJson } from "@/utils/json";
+import type { HeaderMap, Response } from "@/types/report";
+import { hasJsonBody, prettifyJson } from "@/utils/json";
 import { FileBracesCornerIcon } from "lucide-vue-next";
-import { computed } from "vue";
-import CodeBlock from "../CodeBlock.vue";
+import { computed, ref } from "vue";
 import CodeBlockV2 from "../CodeBlockV2.vue";
+import HeadersTable from "./HeadersTable.vue";
 import ResponseStatusBadge from "../ResponseStatusBadge.vue";
 import {
   Accordion,
@@ -19,12 +19,14 @@ const props = defineProps<{
 
 const isSkipped = (response: Response) => response.status === "skipped";
 
-const hasHeaders = computed(() =>
-  hasJsonHeader(isSkipped(props.response) ? null : props.response.headers),
+const responseHeaders = computed<HeaderMap | null>(() =>
+  isSkipped(props.response) ? null : props.response.headers,
 );
-const prettyJsonHeaders = computed(() =>
-  prettifyJson(isSkipped(props.response) ? null : props.response.headers),
+const hasHeaders = computed(
+  () => Object.keys(responseHeaders.value ?? {}).length > 0,
 );
+
+const responseHeadersFilter = ref("");
 
 const hasBody = computed(() => hasJsonBody(props.response.data));
 const prettyResponseBody = computed(() => prettifyJson(props.response.data));
@@ -60,7 +62,11 @@ const prettyResponseBody = computed(() => prettifyJson(props.response.data));
             <p v-if="!hasHeaders" class="text-muted-foreground text-sm">
               No headers
             </p>
-            <CodeBlock v-else :content="prettyJsonHeaders" language="json" />
+            <HeadersTable
+              v-else
+              v-model="responseHeadersFilter"
+              :headers="responseHeaders ?? {}"
+            />
           </AccordionContent>
         </AccordionItem>
       </Accordion>

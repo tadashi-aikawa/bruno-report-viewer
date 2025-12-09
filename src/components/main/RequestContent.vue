@@ -5,13 +5,14 @@ import { FileBracesCornerIcon } from "lucide-vue-next";
 import { computed, ref } from "vue";
 import CodeBlock from "../CodeBlock.vue";
 import MethodBadge from "../MethodBadge.vue";
-import RequestQueryTable from "./RequestQueryTable.vue";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "../ui/accordion";
+import HeadersTable from "./HeadersTable.vue";
+import RequestQueryTable from "./RequestQueryTable.vue";
 
 const props = defineProps<{
   request: Request;
@@ -19,9 +20,6 @@ const props = defineProps<{
 
 const hasHeaders = computed(
   () => Object.keys(props.request.headers ?? {}).length > 0,
-);
-const prettyJsonHeaders = computed(() =>
-  JSON.stringify(props.request.headers ?? {}, null, 2),
 );
 
 const hasBody = computed(() => hasJsonBody(props.request.data));
@@ -39,6 +37,7 @@ const queryMap = computed(() => {
 });
 
 const queryFilter = ref("");
+const requestHeadersFilter = ref("");
 </script>
 
 <template>
@@ -79,7 +78,11 @@ const queryFilter = ref("");
           <p v-if="!hasHeaders" class="text-muted-foreground text-sm">
             No headers.
           </p>
-          <CodeBlock v-else :content="prettyJsonHeaders" language="json" />
+          <HeadersTable
+            v-else
+            v-model="requestHeadersFilter"
+            :headers="request.headers ?? {}"
+          />
         </AccordionContent>
       </AccordionItem>
     </Accordion>
