@@ -4,14 +4,13 @@ import { hasJsonBody, prettifyJson } from "@/utils/json";
 import { FileBracesCornerIcon } from "lucide-vue-next";
 import { computed, ref } from "vue";
 import CodeBlockV2 from "../CodeBlockV2.vue";
-import HeadersTable from "./HeadersTable.vue";
-import ResponseStatusBadge from "../ResponseStatusBadge.vue";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "../ui/accordion";
+import HeadersTable from "./HeadersTable.vue";
 
 const props = defineProps<{
   response: Response;
@@ -52,10 +51,6 @@ const prettyResponseBody = computed(() => prettifyJson(props.response.data));
             <div class="flex items-center gap-2">
               <FileBracesCornerIcon class="inline-block size-4" />
               <span class="group-hover:underline">Response Header</span>
-              <ResponseStatusBadge
-                :status="response.status"
-                :status-text="response.statusText"
-              />
             </div>
           </AccordionTrigger>
           <AccordionContent>

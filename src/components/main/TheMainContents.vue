@@ -4,6 +4,7 @@ import type { Result } from "@/types/report";
 import { ScrollArea } from "../ui/scroll-area";
 import RequestContent from "./RequestContent.vue";
 import ResponseContent from "./ResponseContent.vue";
+import ResponseMetaHeader from "./ResponseMetaHeader.vue";
 import TestResultContent from "./TestResultContent.vue";
 
 defineProps<{
@@ -18,11 +19,15 @@ defineProps<{
       class="flex h-full flex-col"
       v-slot="{ modelValue }"
     >
-      <TabsList class="flex-none">
-        <TabsTrigger value="test-results"> Test Results </TabsTrigger>
-        <TabsTrigger value="response"> Response </TabsTrigger>
-        <TabsTrigger value="request"> Request </TabsTrigger>
-      </TabsList>
+      <div class="flex items-center justify-between gap-4">
+        <TabsList class="flex-none">
+          <TabsTrigger value="test-results"> Test Results </TabsTrigger>
+          <TabsTrigger value="response"> Response </TabsTrigger>
+          <TabsTrigger value="request"> Request </TabsTrigger>
+        </TabsList>
+
+        <ResponseMetaHeader :response="result.response" />
+      </div>
 
       <ScrollArea class="min-h-0 py-2">
         <Transition
