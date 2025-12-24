@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { HeaderMap, Response } from "@/types/report";
+import type { ErrorResponse, HeaderMap, Response } from "@/types/report";
 import { computed } from "vue";
 import ResponseStatusBadge from "../ResponseStatusBadge.vue";
 
 const props = defineProps<{
-  response: Response;
+  response: Exclude<Response, ErrorResponse>;
 }>();
 
 const isSkipped = (response: Response) => response.status === "skipped";

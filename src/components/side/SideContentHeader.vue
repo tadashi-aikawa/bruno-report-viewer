@@ -21,6 +21,7 @@ const filterFailed = defineModel<boolean>("filter-failed", { required: true });
 const filterSkipped = defineModel<boolean>("filter-skipped", {
   required: true,
 });
+const filterError = defineModel<boolean>("filter-error", { required: true });
 
 const word = defineModel<string>("word", { required: true });
 
@@ -57,6 +58,14 @@ const emit = defineEmits<{
           :icon="CircleOffIcon"
           :count="summary.skippedRequests"
           class="data-[state=on]:border-blue-700 data-[state=on]:text-blue-700"
+        />
+        <StatusToggle
+          v-if="summary.errorRequests > 0"
+          v-model="filterError"
+          label="Error"
+          :icon="OctagonXIcon"
+          :count="summary.errorRequests"
+          class="data-[state=on]:border-yellow-700 data-[state=on]:text-yellow-700"
         />
       </div>
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { HeaderMap, Response } from "@/types/report";
+import type { HeaderMap, NonErrorResponse, Response } from "@/types/report";
 import { hasJsonBody, prettifyJson } from "@/utils/json";
 import { FileBracesCornerIcon } from "lucide-vue-next";
 import { computed, ref } from "vue";
@@ -13,7 +13,7 @@ import {
 import HeadersTable from "./HeadersTable.vue";
 
 const props = defineProps<{
-  response: Response;
+  response: NonErrorResponse;
 }>();
 
 const isSkipped = (response: Response) => response.status === "skipped";

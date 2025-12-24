@@ -2,6 +2,8 @@
  * bru run の JSON レポート構造。`report.json` から推測した型。
  */
 
+import { match } from "ts-pattern";
+
 // 0番目のイテレーションのみを扱う. 実際は IterationReport[] が正しい
 export type BrunoReport = [IterationReport];
 
@@ -38,7 +40,7 @@ export interface Result {
   request: Request;
   response: Response;
   error: string | null;
-  status: ResultStatus; // ここはテスト結果にかかわらずpass になる?
+  status: ResultStatus; // ここはテストのスクリプトがこけたりするとerrorになる
   testResults: AssertionResult[];
 
   // test以外は実装しない
@@ -58,16 +60,20 @@ export interface Result {
   // 今は使っていない
   iterationIndex: number;
 }
-export type BRVStatus = "passed" | "failed" | "skipped";
+export type BRVStatus = "passed" | "failed" | "skipped" | "error";
 export const Result = {
   toStatus(result: Result): BRVStatus {
-    if (result.status === "skipped") {
-      return "skipped";
-    }
-    const hasFailedAssertion = result.testResults.some(
-      (ar) => ar.status === "fail",
-    );
-    return hasFailedAssertion ? "failed" : "passed";
+    return match(result.status)
+      .returnType<BRVStatus>()
+      .with("error", () => "error")
+      .with("skipped", () => "skipped")
+      .with("pass", () => {
+        const hasFailedAssertion = result.testResults.some(
+          (ar) => ar.status === "fail",
+        );
+        return hasFailedAssertion ? "failed" : "passed";
+      })
+      .exhaustive();
   },
 };
 
@@ -76,12 +82,21 @@ export interface TestFile {
   filename: string;
 }
 
-export interface Request {
+export interface NonErrorRequest {
   method: HttpMethod;
   url: string;
   headers: HeaderMap;
   data?: RequestBody;
 }
+
+export interface ErrorRequest {
+  method: null;
+  url: null;
+  headers: null;
+  data?: null;
+}
+
+export type Request = NonErrorRequest | ErrorRequest;
 
 export interface NonSkippedResponse {
   status: number;
@@ -99,7 +114,11 @@ export interface SkippedResponse {
   responseTime: 0;
   data: null;
 }
-export type Response = NonSkippedResponse | SkippedResponse;
+export interface ErrorResponse {
+  status: "error";
+}
+export type Response = NonSkippedResponse | SkippedResponse | ErrorResponse;
+export type NonErrorResponse = Exclude<Response, ErrorResponse>;
 
 export interface AssertionResult {
   description: string;
@@ -127,5 +146,5 @@ export type RequestBody = string | Record<string, unknown> | unknown[] | null;
 export type ResponseBody = string | Record<string, unknown> | unknown[];
 
 /** スキップされなければpass */
-export type ResultStatus = "pass" | "skipped";
+export type ResultStatus = "pass" | "skipped" | "error";
 // FIXME: リクエストに失敗したら fail になる可能性もある?

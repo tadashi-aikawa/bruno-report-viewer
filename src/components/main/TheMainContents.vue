@@ -26,7 +26,10 @@ defineProps<{
           <TabsTrigger value="request"> Request </TabsTrigger>
         </TabsList>
 
-        <ResponseMetaHeader :response="result.response" />
+        <ResponseMetaHeader
+          v-if="result.response.status !== 'error'"
+          :response="result.response"
+        />
       </div>
 
       <ScrollArea class="min-h-0 py-2">
@@ -44,10 +47,16 @@ defineProps<{
               <TestResultContent :results="result.testResults" />
             </TabsContent>
             <TabsContent value="response">
-              <ResponseContent :response="result.response" />
+              <ResponseContent
+                v-if="result.response.status !== 'error'"
+                :response="result.response"
+              />
             </TabsContent>
             <TabsContent value="request">
-              <RequestContent :request="result.request" />
+              <RequestContent
+                v-if="result.request.method !== null"
+                :request="result.request"
+              />
             </TabsContent>
           </div>
         </Transition>

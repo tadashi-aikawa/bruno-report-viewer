@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Request } from "@/types/report";
+import type { NonErrorRequest } from "@/types/report";
 import { hasJsonBody, prettifyJson } from "@/utils/json";
 import { FileBracesCornerIcon } from "lucide-vue-next";
 import { computed, ref } from "vue";
@@ -15,7 +15,7 @@ import HeadersTable from "./HeadersTable.vue";
 import RequestQueryTable from "./RequestQueryTable.vue";
 
 const props = defineProps<{
-  request: Request;
+  request: NonErrorRequest;
 }>();
 
 const hasHeaders = computed(

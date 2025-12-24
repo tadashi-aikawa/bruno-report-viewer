@@ -44,7 +44,7 @@ const activeResult = ref<Result | null>(null);
 
       <ResizablePanel>
         <TheMainContents
-          v-if="activeResult"
+          v-if="activeResult && activeResult.status !== 'error'"
           :result="activeResult"
           class="p-content"
         />

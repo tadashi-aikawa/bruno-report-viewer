@@ -4,6 +4,7 @@ export type StatusCounts = {
   passed: number;
   failed: number;
   skipped: number;
+  error: number;
 };
 
 export type TreeNode = {

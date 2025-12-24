@@ -23,6 +23,7 @@ const emit = defineEmits<{
 const filterPassed = ref<boolean>(false);
 const filterFailed = ref<boolean>(true);
 const filterSkipped = ref<boolean>(false);
+const filterError = ref<boolean>(true);
 const word = ref("");
 const expandedItems = ref<string[]>([]);
 
@@ -35,7 +36,8 @@ const filteredResults = computed(() => {
       return (
         (status === "passed" && filterPassed.value) ||
         (status === "failed" && filterFailed.value) ||
-        (status === "skipped" && filterSkipped.value)
+        (status === "skipped" && filterSkipped.value) ||
+        (status === "error" && filterError.value)
       );
     })
     .filter((x) => {
@@ -86,7 +88,7 @@ const buildTree = (results: Result[]): TreeNode[] => {
     children: [],
     childrenMap: new Map(),
     resultCount: 0,
-    statusCounts: { passed: 0, failed: 0, skipped: 0 },
+    statusCounts: { passed: 0, failed: 0, skipped: 0, error: 0 },
   };
 
   const createNode = (name: string, fullPath: string): BuildNode => ({
@@ -95,7 +97,7 @@ const buildTree = (results: Result[]): TreeNode[] => {
     children: [],
     childrenMap: new Map(),
     resultCount: 0,
-    statusCounts: { passed: 0, failed: 0, skipped: 0 },
+    statusCounts: { passed: 0, failed: 0, skipped: 0, error: 0 },
   });
 
   results.forEach((result) => {
@@ -129,12 +131,13 @@ const buildTree = (results: Result[]): TreeNode[] => {
 
   const computeResultCount = (node: BuildNode): StatusCounts => {
     const childCounts = node.children.map(computeResultCount);
-    const totals: StatusCounts = { passed: 0, failed: 0, skipped: 0 };
+    const totals: StatusCounts = { passed: 0, failed: 0, skipped: 0, error: 0 };
 
     childCounts.forEach((count) => {
       totals.passed += count.passed;
       totals.failed += count.failed;
       totals.skipped += count.skipped;
+      totals.error += count.error;
     });
 
     if (node.result) {
@@ -143,7 +146,8 @@ const buildTree = (results: Result[]): TreeNode[] => {
     }
 
     node.statusCounts = totals;
-    node.resultCount = totals.passed + totals.failed + totals.skipped;
+    node.resultCount =
+      totals.passed + totals.failed + totals.skipped + totals.error;
     return totals;
   };
 
@@ -210,6 +214,7 @@ onMounted(() => {
       v-model:filter-passed="filterPassed"
       v-model:filter-failed="filterFailed"
       v-model:filter-skipped="filterSkipped"
+      v-model:filter-error="filterError"
       v-model:word="word"
       @clickExpandAll="expandAll"
       @clickCollapseAll="collapseAll"

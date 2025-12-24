@@ -14,6 +14,7 @@ const responseStatusBadgeVariants = cva(
         clientError: "border-amber-200",
         serverError: "border-red-200",
         skipped: "border-blue-200",
+        error: "border-yellow-200",
         default: "border-border",
       },
       tone: {
@@ -29,6 +30,7 @@ const responseStatusBadgeVariants = cva(
       { variant: "clientError", tone: "filled", class: "bg-amber-100 text-amber-900", },
       { variant: "serverError", tone: "filled", class: "bg-red-100 text-red-900", },
       { variant: "skipped", tone: "filled", class: "bg-blue-100 text-blue-900", },
+      { variant: "error", tone: "filled", class: "bg-yellow-100 text-yellow-900", },
       { variant: "default", tone: "filled", class: "bg-muted text-foreground" },
 
       // outline
@@ -37,6 +39,7 @@ const responseStatusBadgeVariants = cva(
       { variant: "clientError", tone: "outline", class: "text-amber-600 border-amber-400", },
       { variant: "serverError", tone: "outline", class: "text-red-600 border-red-400", },
       { variant: "skipped", tone: "outline", class: "text-blue-600 border-blue-400", },
+      { variant: "error", tone: "outline", class: "text-yellow-600 border-yellow-400", },
       { variant: "default", tone: "outline", class: "text-foreground", },
     ],
     defaultVariants: { variant: "default", tone: "filled" },
@@ -56,6 +59,7 @@ const props = defineProps<{
 
 const variant = computed<ResponseStatusBadgeVariants["variant"]>(() => {
   const status = props.status;
+  if (status === "error") return "error";
   if (status === "skipped") return "skipped";
   if (status >= 200 && status < 300) return "success";
   if (status >= 300 && status < 400) return "redirect";

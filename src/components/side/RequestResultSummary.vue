@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { Result } from "@/types/report";
-import { BadgeCheckIcon, CircleOffIcon, OctagonXIcon } from "lucide-vue-next";
+import {
+  BadgeCheckIcon,
+  CircleOffIcon,
+  OctagonXIcon,
+  SkullIcon,
+} from "lucide-vue-next";
 import { match } from "ts-pattern";
 import { computed } from "vue";
 import MethodBadge from "../MethodBadge.vue";
@@ -47,6 +52,17 @@ const statusMeta = computed(() =>
       class:
         "text-blue-800 ring-blue-200 dark:bg-blue-500/10 dark:text-blue-50 dark:ring-blue-500/30",
     }))
+    .with("error", () => ({
+      label: "Error",
+      icon: SkullIcon,
+      baseClass:
+        "bg-yellow-50/10 hover:bg-yellow-100/45 border-yellow-100 dark:bg-yellow-500/8 dark:hover:bg-yellow-500/16",
+      activeClass:
+        "bg-yellow-100 dark:bg-yellow-500/25 border-yellow-200 dark:border-yellow-500/40",
+      barClass: "bg-yellow-400",
+      class:
+        "text-yellow-800 ring-yellow-200 dark:bg-yellow-500/10 dark:text-yellow-50 dark:ring-yellow-500/30",
+    }))
     .exhaustive(),
 );
 </script>
@@ -78,11 +94,17 @@ const statusMeta = computed(() =>
           tone="outline"
         />
       </div>
-      <div class="text-muted-foreground flex items-center gap-2 text-xs">
+      <div
+        v-if="result.request.method !== null"
+        class="text-muted-foreground flex items-center gap-2 text-xs"
+      >
         <MethodBadge :method="result.request.method" size="sm" tone="text" />
         <div class="truncate">
           {{ result.request.url }}
         </div>
+      </div>
+      <div v-else class="text-destructive flex truncate text-xs">
+        {{ result.error }}
       </div>
     </div>
   </button>

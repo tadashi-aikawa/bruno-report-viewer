@@ -32,11 +32,12 @@ const emit = defineEmits<{
 const handleSelect = (result: Result) => emit("select", result);
 
 type StatusKey = keyof TreeNode["statusCounts"];
-const statusOrder: StatusKey[] = ["passed", "failed", "skipped"];
+const statusOrder: StatusKey[] = ["passed", "failed", "skipped", "error"];
 const statusBadgeStyles: Record<StatusKey, string> = {
   passed: "border-emerald-200 bg-emerald-100 text-emerald-800",
   failed: "border-rose-200 bg-rose-100 text-rose-800",
   skipped: "border-blue-200 bg-blue-100 text-blue-800",
+  error: "border-yellow-200 bg-yellow-100 text-yellow-800",
 };
 
 const hasChildren = computed(() => node.children.length > 0);
