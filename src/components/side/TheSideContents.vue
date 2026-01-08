@@ -167,6 +167,18 @@ const buildTree = (results: Result[]): TreeNode[] => {
 
 const treeResults = computed(() => buildTree(filteredResults.value));
 
+// WARNING: Bruno CLIだけなぜか500エラー発生時にtestResultsが空になる場合がある
+//          testResultsが空のケースのみ
+const illegalErrorNum5oo = computed(
+  () =>
+    props.report.results.filter(
+      (r) =>
+        typeof r.response?.status === "number" &&
+        r.response.status >= 500 &&
+        r.testResults.length === 0,
+    ).length,
+);
+
 const expandableValues = computed(() => {
   const collect = (nodes: TreeNode[], acc: string[]): void => {
     nodes.forEach((node) => {
@@ -211,6 +223,7 @@ onMounted(() => {
   <div class="flex h-[calc(100vh_-_var(--spacing-header))] flex-col gap-4">
     <SideContentHeader
       :summary="props.report.summary"
+      :illegal-error-num-5oo="illegalErrorNum5oo"
       v-model:filter-passed="filterPassed"
       v-model:filter-failed="filterFailed"
       v-model:filter-skipped="filterSkipped"

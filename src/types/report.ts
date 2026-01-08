@@ -2,7 +2,7 @@
  * bru run の JSON レポート構造。`report.json` から推測した型。
  */
 
-import { match } from "ts-pattern";
+import { match, P } from "ts-pattern";
 
 // 0番目のイテレーションのみを扱う. 実際は IterationReport[] が正しい
 export type BrunoReport = [IterationReport];
@@ -67,12 +67,25 @@ export const Result = {
       .returnType<BRVStatus>()
       .with("error", () => "error")
       .with("skipped", () => "skipped")
-      .with("pass", () => {
-        const hasFailedAssertion = result.testResults.some(
-          (ar) => ar.status === "fail",
-        );
-        return hasFailedAssertion ? "failed" : "passed";
-      })
+      .with("pass", () =>
+        // WARNING: Bruno CLIだけなぜか500エラー発生時にtestResultsが空になる場合がある
+        match(result.response.status)
+          .returnType<BRVStatus>()
+          .with("error", () => "error")
+          .with("skipped", () => "skipped")
+          .with(
+            P.when((s) => s >= 500),
+            () => "failed" as BRVStatus, // 500エラーは必ず失敗扱いでいいので
+          )
+          .with(P.number, () => {
+            const hasFailedAssertion = result.testResults.some(
+              (ar) => ar.status === "fail",
+            );
+
+            return hasFailedAssertion ? "failed" : "passed";
+          })
+          .exhaustive(),
+      )
       .exhaustive();
   },
 };

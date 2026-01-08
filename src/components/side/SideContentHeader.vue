@@ -14,6 +14,9 @@ import StatusToggle from "./StatusToggle.vue";
 
 defineProps<{
   summary: Summary;
+  // WARNING: Bruno CLIだけなぜか500エラー発生時にtestResultsが空になる場合がある
+  //          testResultsが空のケースのみ
+  illegalErrorNum5oo: number;
 }>();
 
 const filterPassed = defineModel<boolean>("filter-passed", { required: true });
@@ -43,12 +46,15 @@ const emit = defineEmits<{
           :count="summary.passedRequests"
           class="data-[state=on]:border-emerald-700 data-[state=on]:text-emerald-700"
         />
+        <!-- WARNING: Bruno CLIだけなぜか5ooエラー発生時にtestResultsが空になる場合がある -->
+        <!-- testResultsが空のケースのみ -->
+
         <StatusToggle
-          v-if="summary.failedRequests > 0"
+          v-if="summary.failedRequests + illegalErrorNum5oo > 0"
           v-model="filterFailed"
           label="Failed"
           :icon="OctagonXIcon"
-          :count="summary.failedRequests"
+          :count="summary.failedRequests + illegalErrorNum5oo"
           class="data-[state=on]:border-destructive data-[state=on]:text-destructive"
         />
         <StatusToggle
