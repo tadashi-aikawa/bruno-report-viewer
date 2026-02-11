@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { buildMatchers, matchesFields } from "@/utils/search";
 import type { HeaderMap } from "@/types/report";
+import { buildMatchers, matchesFields } from "@/utils/search";
 import { FilterIcon } from "lucide-vue-next";
 import { computed } from "vue";
 import { Input } from "../ui/input";
@@ -19,6 +19,13 @@ const props = defineProps<{
 }>();
 
 const filter = defineModel<string>({ default: "" });
+
+const filterInput = computed<string | number>({
+  get: () => filter.value,
+  set: (value) => {
+    filter.value = String(value);
+  },
+});
 
 type HeaderRow = {
   key: string;
@@ -58,7 +65,7 @@ const filteredRows = computed(() => {
           class="text-secondary-foreground pointer-events-none absolute top-1/2 left-2 size-4 -translate-y-1/2"
         />
         <Input
-          v-model="filter as string"
+          v-model="filterInput"
           type="search"
           placeholder="Filter (space-separated AND, regex supported)"
           class="h-8 pl-8 text-xs"
@@ -94,4 +101,3 @@ const filteredRows = computed(() => {
     </div>
   </div>
 </template>
-

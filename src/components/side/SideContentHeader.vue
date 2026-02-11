@@ -8,6 +8,7 @@ import {
   ListChevronsUpDown,
   OctagonXIcon,
 } from "lucide-vue-next";
+import { computed } from "vue";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import StatusToggle from "./StatusToggle.vue";
@@ -27,6 +28,13 @@ const filterSkipped = defineModel<boolean>("filter-skipped", {
 const filterError = defineModel<boolean>("filter-error", { required: true });
 
 const word = defineModel<string>("word", { required: true });
+
+const wordInput = computed<string | number>({
+  get: () => word.value,
+  set: (value) => {
+    word.value = String(value);
+  },
+});
 
 const emit = defineEmits<{
   clickExpandAll: [];
@@ -80,7 +88,7 @@ const emit = defineEmits<{
           class="text-secondary-foreground pointer-events-none absolute top-1/2 left-2 size-4 -translate-y-1/2"
         />
         <Input
-          v-model="word as string"
+          v-model="wordInput"
           type="search"
           placeholder="Filter (space-separated AND, regex supported)"
           class="pl-8"

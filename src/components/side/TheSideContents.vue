@@ -27,6 +27,13 @@ const filterError = ref<boolean>(true);
 const word = ref("");
 const expandedItems = ref<string[]>([]);
 
+const accordionModel = computed<string | string[] | undefined>({
+  get: () => expandedItems.value,
+  set: (v) => {
+    expandedItems.value = Array.isArray(v) ? v : v ? [v] : [];
+  },
+});
+
 const filteredResults = computed(() => {
   const matchers = word.value.trim() ? buildMatchers(word.value) : [];
 
@@ -234,11 +241,7 @@ onMounted(() => {
     />
 
     <ScrollArea class="min-h-0 pr-4">
-      <Accordion
-        v-model="expandedItems as string[]"
-        type="multiple"
-        collapsible
-      >
+      <Accordion v-model="accordionModel" type="multiple" collapsible>
         <TreeBranch
           v-for="node in treeResults"
           :key="node.fullPath"
