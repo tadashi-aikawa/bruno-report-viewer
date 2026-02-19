@@ -8,9 +8,10 @@
   },
   "scripts": {
     "dev": "vite",
-    "typecheck:old": "vue-tsc -b",
     "typecheck": "golar --build --noEmit",
+    "formatcheck": "prettier --experimental-cli --check *.ts src/**/*.{vue,ts}",
     "build": "bun typecheck && vite build",
+    "ci": "bun typecheck && bun formatcheck && bun build",
     "serve": "bun serve-cli",
     "test": "vitest run",
     "build:serve": "bun run build && bun serve",

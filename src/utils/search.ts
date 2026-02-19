@@ -2,10 +2,7 @@ const escapeRegExp = (value: string): string =>
   value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 export const buildMatchers = (query: string): RegExp[] => {
-  const tokens = query
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean);
+  const tokens = query.trim().split(/\s+/).filter(Boolean);
 
   return tokens.map((token) => {
     try {

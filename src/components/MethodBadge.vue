@@ -21,7 +21,7 @@ const methodBadgeVariants = cva(
       },
       tone: {
         filled: "rounded border shadow-none",
-        text: "bg-transparent border-none px-0 py-0 shadow-none",
+        text: "border-none bg-transparent px-0 py-0 shadow-none",
       },
     },
     compoundVariants: [
