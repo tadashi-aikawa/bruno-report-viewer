@@ -540,6 +540,54 @@
         "name": "11_usersの取得",
         "path": "11_usersの取得",
         "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "999_エラー系/01_Django500エラー.bru"
+        },
+        "request": {
+          "method": "GET",
+          "url": "http://localhost:8000/broken/",
+          "headers": {
+            "Authorization": "Basic ********"
+          }
+        },
+        "response": {
+          "status": 500,
+          "statusText": "Internal Server Error",
+          "headers": {
+            "date": "Thu, 19 Feb 2026 11:00:00 GMT",
+            "server": "WSGIServer/0.2 CPython/3.13.7",
+            "content-type": "text/html; charset=utf-8",
+            "x-frame-options": "SAMEORIGIN",
+            "content-length": "2000",
+            "x-content-type-options": "nosniff",
+            "referrer-policy": "same-origin"
+          },
+          "data": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">\n  <meta name=\"robots\" content=\"NONE,NOARCHIVE\">\n  <title>ValueError at /broken/</title>\n  <style type=\"text/css\">\n    html * { padding:0; margin:0; }\n    body * { padding:10px 20px; }\n    body * * { padding:0; }\n    body { font:small sans-serif; background:#eee; }\n    body>div { border-bottom:1px solid #ddd; }\n    h1 { font-weight:normal; margin-bottom:.4em; }\n    h1 span { font-size:60%; color:#666; font-weight:normal; }\n    #info { background:#f6f6f6; }\n    #info ul { margin: 0.5em 4em; }\n    #info p, #summary p { padding-top:10px; }\n    #summary { background: #ffc; }\n    #explanation { background:#eee; border-bottom: 0px none; }\n    pre.exception_value { font-family: sans-serif; color: #575757; font-size: 1.5em; margin: 10px 0 10px 0; }\n  </style>\n</head>\n<body>\n<div id=\"summary\">\n  <h1>ValueError <span>at /broken/</span></h1>\n  <pre class=\"exception_value\">Something went wrong intentionally</pre>\n  <table class=\"meta\">\n    <tr>\n      <th>Request Method:</th>\n      <td>GET</td>\n    </tr>\n    <tr>\n      <th>Request URL:</th>\n      <td>http://localhost:8000/broken/</td>\n    </tr>\n    <tr>\n      <th>Django Version:</th>\n      <td>5.1.4</td>\n    </tr>\n    <tr>\n      <th>Exception Type:</th>\n      <td>ValueError</td>\n    </tr>\n    <tr>\n      <th>Exception Value:</th>\n      <td>Something went wrong intentionally</td>\n    </tr>\n    <tr>\n      <th>Exception Location:</th>\n      <td>myapp/views.py, line 42, in broken_view</td>\n    </tr>\n    <tr>\n      <th>Raised During:</th>\n      <td>myapp.views.broken_view</td>\n    </tr>\n  </table>\n</div>\n<div id=\"info\">\n  <h2>Traceback <span>(most recent call last)</span></h2>\n  <ul>\n    <li>\n      <code>File \"/usr/local/lib/python3.13/site-packages/django/core/handlers/exception.py\", line 55, in inner<br>response = get_response(request)</code>\n    </li>\n    <li>\n      <code>File \"/usr/local/lib/python3.13/site-packages/django/core/handlers/base.py\", line 197, in _get_response<br>response = wrapped_callback(request, *callback_args, **callback_kwargs)</code>\n    </li>\n    <li>\n      <code>File \"myapp/views.py\", line 42, in broken_view<br>raise ValueError(\"Something went wrong intentionally\")</code>\n    </li>\n  </ul>\n</div>\n<div id=\"explanation\">\n  <p>You're seeing this error because you have <code>DEBUG = True</code> in your Django settings file. Change that to <code>False</code>, and Django will display a standard 500 page.</p>\n</div>\n</body>\n</html>",
+          "url": "http://localhost:8000/broken/",
+          "responseTime": 12
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [
+          {
+            "description": "ステータスコードが200",
+            "status": "fail",
+            "error": "expected 500 to equal 200",
+            "actual": 500,
+            "expected": 200,
+            "uid": "django500TestUid000001"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.012345678,
+        "name": "01_Django500エラー",
+        "path": "999_エラー系/01_Django500エラー",
+        "iterationIndex": 0
       }
     ],
     "summary": {

@@ -2,7 +2,7 @@
 import * as monaco from "monaco-editor";
 import { onMounted, ref } from "vue";
 
-type Language = "json";
+type Language = "json" | "html";
 
 const props = defineProps<{
   content: string;
@@ -41,7 +41,7 @@ onMounted(() => {
 
   monaco.editor.create(editorEl.value!, {
     value: props.content,
-    language: "json",
+    language: props.language,
     automaticLayout: true,
     readOnly: true,
     theme: "github-json",

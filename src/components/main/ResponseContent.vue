@@ -10,6 +10,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "../ui/accordion";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import HeadersTable from "./HeadersTable.vue";
 
 const props = defineProps<{
@@ -29,6 +30,16 @@ const responseHeadersFilter = ref("");
 
 const hasBody = computed(() => hasJsonBody(props.response.data));
 const prettyResponseBody = computed(() => prettifyJson(props.response.data));
+
+const isHtmlBody = computed(() => {
+  if (isSkipped(props.response)) return false;
+  const contentType = props.response.headers["content-type"] ?? "";
+  return (
+    contentType.includes("text/html") &&
+    typeof props.response.data === "string" &&
+    (props.response.data as string).trim().length > 0
+  );
+});
 </script>
 
 <template>
@@ -72,11 +83,37 @@ const prettyResponseBody = computed(() => prettifyJson(props.response.data));
           <span>Response Body</span>
         </div>
         <p v-if="!hasBody" class="text-muted-foreground text-sm">No body.</p>
+        <template v-else-if="isHtmlBody">
+          <Tabs
+            default-value="source"
+            class="flex h-[calc(100vh-20rem)] flex-col"
+          >
+            <TabsList class="mb-2 shrink-0">
+              <TabsTrigger value="source">Source</TabsTrigger>
+              <TabsTrigger value="preview">Preview</TabsTrigger>
+            </TabsList>
+            <TabsContent value="source" class="min-h-0 flex-1">
+              <CodeBlockV2
+                :content="(response.data as string)"
+                language="html"
+                class="h-full"
+              />
+            </TabsContent>
+            <TabsContent value="preview" class="min-h-0 flex-1">
+              <iframe
+                :srcdoc="(response.data as string)"
+                sandbox=""
+                class="h-full w-full rounded border bg-white"
+                loading="lazy"
+              />
+            </TabsContent>
+          </Tabs>
+        </template>
         <CodeBlockV2
           v-else
           :content="prettyResponseBody"
           language="json"
-          class="h-[calc(100vh_-_20rem)]"
+          class="h-[calc(100vh-20rem)]"
         />
       </div>
     </template>
