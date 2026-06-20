@@ -13,7 +13,7 @@
     "typecheck": "golar --build --noEmit",
     "formatcheck": "prettier --experimental-cli --check *.ts src/**/*.{vue,ts}",
     "test": "vitest run",
-    "ci": "bun typecheck && bun formatcheck && bun run test",
+    "verify": "bun ci && bun typecheck && bun formatcheck && bun run test",
     "build:serve": "bun run build && bun serve",
     "preview": "vite preview"
   },

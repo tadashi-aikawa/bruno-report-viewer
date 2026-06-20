@@ -36,7 +36,7 @@ bun serve <report.json> [port:3000] [--open]
 
 ```sh
 # ビルド
-bun install --frozen-lockfile
+bun ci
 bun run build
 
 # 起動
