@@ -17,15 +17,6 @@
 - ビルド成果物は `dist/`。CLI エントリは `dist/cli.ts` にバンドルされる。
 - 設定: TypeScript 設定は `tsconfig.json`、アプリ用は `tsconfig.app.json`。Vite 設定は `vite.config.ts` を参照。
 
-## ビルド・テスト・開発コマンド
-
-- `bun run dev`: Vite の開発サーバーを起動。
-- `bun run typecheck`: vue-tsc で型検査のみを実行。
-- `bun run build`: 型検査後に Vite ビルド。CLI 向けバンドルも生成。
-- `bun run serve`: `serve-cli.ts` を経由してビルド成果物をローカル提供。
-- `bun run build:serve`: ビルドからローカル提供まで連続実行。
-- `bun run preview`: Vite のプレビューサーバーでビルド済み成果物を確認。
-
 ## コーディング規約と命名
 
 - 言語: TypeScript + Vue SFC (`<script setup>`)。型を積極的に付け、`any` は避ける。
@@ -39,9 +30,6 @@
     - `src/components` 配下にファイルを作成
     - shadcn-vue の設計思想をrespectすること
 
-## テスト指針
+## 検証
 
-- コード変更後は以下を実行
-    - `bun run typecheck` で型チェック
-    - `bun run test` でユニットテスト
-    - prettierの実行
+- `bun verify` が通過すること
