@@ -10,7 +10,9 @@ if (!reportPath) {
   process.exit(1);
 }
 
-const reportData = JSON.parse(await Bun.file(reportPath).text());
+const reportFile = Bun.file(reportPath);
+const reportData = JSON.parse(await reportFile.text());
+const reportLastModified = new Date(reportFile.lastModified).toUTCString();
 
 const distDir = path.join(import.meta.dir, "dist");
 const indexHtmlPath = path.join(distDir, "index.html");
@@ -21,7 +23,12 @@ serve({
     const url = new URL(req.url);
 
     if (url.pathname === "/api/report") {
-      return Response.json(reportData);
+      return Response.json(reportData, {
+        headers: {
+          "Last-Modified": reportLastModified,
+          "Cache-Control": "no-store",
+        },
+      });
     }
 
     // Map / -> /index.html, otherwise serve the file from dist
@@ -38,7 +45,9 @@ serve({
 });
 
 if (shouldOpen) {
-  Bun.spawn(["open", `http://localhost:${port}`]);
+  // Append a unique query so the browser reloads the page instead of just
+  // re-focusing an existing tab (which would keep showing a previous report).
+  Bun.spawn(["open", `http://localhost:${port}/?t=${Date.now()}`]);
 }
 
 console.log(`Serving report at http://localhost:${port}`);

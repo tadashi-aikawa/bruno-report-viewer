@@ -14,7 +14,7 @@ import { Spinner } from "./components/ui/spinner";
 import { useReport } from "./composables/useReport";
 import type { Result } from "./types/report";
 
-const { report, fetchReport, loading } = useReport();
+const { report, generatedAt, fetchReport, loading } = useReport();
 onMounted(fetchReport);
 
 const activeResult = ref<Result | null>(null);
@@ -26,7 +26,7 @@ const activeResult = ref<Result | null>(null);
   </div>
   <div v-else>
     <div class="sticky top-0 z-10">
-      <TheHeader />
+      <TheHeader :generated-at="generatedAt" />
     </div>
 
     <ResizablePanelGroup direction="horizontal">
